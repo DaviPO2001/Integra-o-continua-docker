@@ -9,7 +9,12 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
-    env: HOST:localhost PORT:5432 USER:root PASSWORD:root DBNAME:root
+    env: 
+    HOST: localhost 
+    PORT: 5432 
+    USER: root 
+    PASSWORD: root 
+    DBNAME: root
     strategy:
       matrix:
         os: ['ubuntu-latest', 'ubuntu-18.04']
@@ -18,9 +23,9 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Set up Go
-    uses: actions/setup-go@v3
-    with:
-      go-version: ${{ matrix.go_version }}
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ matrix.go_version }}
 
     - name: Install docker compose
       run: |
@@ -28,13 +33,13 @@ jobs:
         sudo chmod +x /usr/local/bin/docker-compose
 
     - name: Build-DB
-    run: docker-compose build
+      run: docker-compose build
 
     - name: Create-DB
-    run: docker-compose up -d
+      run: docker-compose up -d
 
     - name: Test
-    run: go test -v main_test.go
+      run: go test -v main_test.go
   
   build:
     needs: test
@@ -44,9 +49,11 @@ jobs:
         os: ['ubuntu-latest', 'ubuntu-18.04']
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Go uses: actions/setup-go@v3
-    with: go-version: ${{ matrix.go_version }}
-   
+    - name: Set up Go 
+      uses: actions/setup-go@v3
+      with: 
+        go-version: ${{ matrix.os }}
+     
     - name: Build
       run: go build -v main.go
 
